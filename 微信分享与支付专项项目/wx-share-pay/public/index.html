@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+  <!-- <script src="http://res2.wx.qq.com/open/js/jweixin-1.6.0.js"></script> -->
+  <script>
+    // 获取设别的宽度 这里宽度是逻辑像素
+    var width = document.documentElement.clientWidth
+    // 计算公式获取比例
+    var n = width / 375 * 100
+    // 设置html的font-size值
+    document.documentElement.style.fontSize = n + 'px'
+    // ffc93a
+    // !function (n) {
+    //   var e = n.document, t = e.documentElement, i = 750, d = i / 100, o = 'orientationchange' in n ? 'orientationchange' : 'resize', a = function () {
+    //     var n = t.clientWidth || 375;
+    //     n > 750 && (n = 750), document.documentElement.style.fontSize = n / d + 'px'
+    //     console.log(t.style.fontSize, 'fontSize')
+    //   }
+    //   e.addEventListener && (n.addEventListener(o, a, !1), e.addEventListener("DOMCotentLoaded", a, !1))
+    // }(window)
+  </script>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+      Please enable it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
+</html>
