@@ -16,6 +16,7 @@
   "devDependencies": {
     "create-hash": "^1.2.0",
     "memory-cache": "^0.2.0",
+    "mongodb": "^3.6.3",
     "request": "^2.88.2"
   }
 }
