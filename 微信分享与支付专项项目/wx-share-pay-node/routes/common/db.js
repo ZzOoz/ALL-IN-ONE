@@ -8,9 +8,9 @@ exports.query = function (data, table) {
         connect(function (dbase, db) {
             // 拿到table表，找到data数据，并将其转化为数组
             dbase.collection(table).find(data).toArray(function (err, res) {
-                if(err){
+                if (err) {
                     throw err
-                }else{
+                } else {
                     db.close()
                     // 处理数组，将其转出去
                     resolve(utils.handleSuccess(res))
@@ -25,10 +25,10 @@ exports.insert = function (data, table) {
     return new Promise((resolve, reject) => {
         connect(function (dbase, db) {
             // 拿到table表，找到data数据，并将其转化为数组
-            dbase.collection(table).insertOne(function (err, res) {
-                if(err){
+            dbase.collection(table).insertOne(data, function (err, res) {
+                if (err) {
                     throw err
-                }else{
+                } else {
                     db.close()
                     // 处理数组，将其转出去
                     resolve(utils.handleSuccess(res))

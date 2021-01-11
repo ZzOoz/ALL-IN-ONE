@@ -6,6 +6,7 @@ let router = express.Router()
 let utils = require('../../utils')
 let common = require('../common')
 let createHash = require('create-hash')
+let dao = require('../common/db')
 config = config.wx
 
 router.get('/test', function (req, res) {
@@ -33,15 +34,8 @@ router.get('/redirect', function (req, res) {
 
 router.get('/getOpenId', async function (req, res) {
     // 获取回调回来的code码
-    // console.log('来到getOpenId的地方')
     let code = req.query.code
-    // let openIdUrl = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.appID}&secret=${config.appsecret}&code=${code}&grant_type=authorization_code`
     if (!code) {
-        // res.json({
-        //     code: 1000,
-        //     data: '',
-        //     message: '没有获取到code码~'
-        // })
         res.json(utils.handleFail('没有获取到code码~~'))
     } else {
         let result = await common.getAccessToken(code)
@@ -55,9 +49,31 @@ router.get('/getOpenId', async function (req, res) {
             cache.put('openid', data.openid, expire_time)
             // 存入cookie中
             res.cookie('openId', data.openid, { maxAge: expire_time })
-            // 从memory-cache中获取redirectUrl 进行重定向跳转
-            let redirectUrl = cache.get('redirectUrl')
-            res.redirect(redirectUrl)
+            // 从mongodb中查询openid是否存在词用户
+            let userRes = await dao.query({ "openid": data.openid }, 'users')
+            if (userRes.code == 0) {
+                // 如果已经有用户数据那么就直接跳转url
+                if (userRes.data.length > 0) {
+                    // 从memory-cache中获取redirectUrl 进行重定向跳转
+                    let redirectUrl = cache.get('redirectUrl')
+                    res.redirect(redirectUrl)
+                } else {
+                    // 有的话就查询用户信息
+                    let userData = await common.getUserInfo(data.access_token, data.openid)
+                    // 插入信息
+                    let insertData = await dao.insert(userData.data, 'users')
+                    if (insertData.code == 0) {
+                        let redirectUrl = cache.get('redirectUrl')
+                        res.redirect(redirectUrl)
+                    } else {
+                        res.json(insertData)
+                    }
+                }
+            } else {
+                res.json(userRes)
+            }
+
+
         } else {
             // 发生错误
             res.json(result)
