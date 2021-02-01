@@ -1,3 +1,4 @@
+const createHash = require('create-hash')
 module.exports = {
     // 生成随机字符串
     createNonceStr() {
@@ -6,8 +7,25 @@ module.exports = {
     },
 
     // 生成时间戳
-    createTimeStamp() {
+    createTimeStamp(type = 'wx') {
         return parseInt(new Date().getTime() / 1000) + ''
+    },
+    
+    // 创建系统交易 订单号
+    createTradeNo(){
+        let date = new Date().getTime().toString()
+        let text = ''
+        let possible = '0123456789'
+        for(let i = 0;i < 5;i++){
+            text += possible.charAt(Math.floor(Math.random() * possible.length))
+        }
+        return (type === 'wx' ? 'TengH5':'TengMp') + date + text
+    },
+
+    getSign(params,key){
+        let string = this.raw(params) + '&key=' + key  // config为商户的key值
+        let sign = createHash('md5').update(string).digest('hex')
+        return sign.toUpperCase()
     },
 
     // 对js-sdk的params进行排序

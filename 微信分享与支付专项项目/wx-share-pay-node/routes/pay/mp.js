@@ -1,5 +1,4 @@
 // 微信小程序相关功能路由
-const e = require('express')
 const express = require('express')
 const request = require('request')
 const utils = require('../../utils')
@@ -65,16 +64,17 @@ router.get('/pay/callback', function (req, res) {
 // 小程序支付路由
 router.get('/pay/payWallet', function (req, res) {
     let openId = req.query.openid  // 用户openId
+    let appId = config.mp.appID
     let attach = '支付项目(附加描述数据)'
     let body = '微信小程序支付主题描述内容'
     let total_fee = req.query.money // 支付金额（以分为单位）
     let notify_url = 'http://localhost:3000/api/mp/pay/callback'  // 支付回调地址
+    let ip = '192.168.1.1' // 定义服务器的ip 因为本人没有商户号和服务器 所以随便写一个
     // 调用统一支付方法
-    wxPay.order(openId, attach, body, total_fee, notify_url).then(res => {
+    wxPay.order(appId,openId, attach, body, total_fee, notify_url,ip).then(res => {
         res.json(utils.handleSuccess(res))
     }).catch(err => {
         res.json(utils.handleFail(err))
     })
-    res.json(utils.handleSuccess())
 })
 module.exports = router
