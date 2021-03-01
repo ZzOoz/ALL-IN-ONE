@@ -8,6 +8,7 @@
     <button @click="updateTitle">updateTitle</button>
 
     <div>报错：{{ error }}</div>
+    <!-- Suspense的使用 -->
     <Suspense>
       <template #default>
         <asyncShow />
