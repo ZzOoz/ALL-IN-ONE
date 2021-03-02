@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown">
+  <div class="dropdown" ref="dropDownRef">
     <a
       class="btn btn-outline-light my-2 dropdown-toggle"
       href="#"
@@ -9,14 +9,14 @@
     </a>
 
     <div class="dropdown-menu" style="display: block" v-if="isOpen">
-      <a class="dropdown-item" href="#">新建文章</a>
-      <a class="dropdown-item" href="#">编辑资料</a>
+        <slot></slot>
     </div>
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from 'vue'
+<script lang="ts">
+import { defineComponent, ref, watch } from 'vue'
+import useDropDownClick from '../hooks/useDropDownClick'
 export default defineComponent({
   name: 'DropDown',
   props: {
@@ -27,14 +27,21 @@ export default defineComponent({
   },
   setup () {
     const isOpen = ref(false)
-
+    const dropDownRef = ref<null | HTMLElement>(null)
+    const isOutSideClick = useDropDownClick(dropDownRef)
     const toggleDropDown = () => {
       isOpen.value = !isOpen.value
     }
-
+    console.log(isOutSideClick, 'VALUE')
+    watch(isOutSideClick, () => {
+      if (isOutSideClick.value && isOpen.value) {
+        isOpen.value = false
+      }
+    })
     return {
       isOpen,
-      toggleDropDown
+      toggleDropDown,
+      dropDownRef
     }
   }
 })
