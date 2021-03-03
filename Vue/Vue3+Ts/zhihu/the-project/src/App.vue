@@ -4,9 +4,9 @@
     <!-- <column-list :list="list" /> -->
     <form>
       <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input v-model="emailRef.val" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" @blur="validateEmail">
-        <small v-if="emailRef.error" id="emailHelp" class="form-text text-muted">{{ emailRef.message }}</small>
+        <label for="exampleInputEmail1">邮箱地址</label>
+        <ValidateInput placeholder="请输入邮箱地址" type="text" :rules="validateRules" v-model="emailRef.val"/>
+        <span>{{ emailRef.val }}</span>
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Password</label>
@@ -25,7 +25,9 @@
 import { defineComponent, reactive } from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { ColumnProps } from './components/ColumnList.vue'
+import ValidateInput, { RulesProps } from './components/ValidateInput.vue'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
+
 const testData: ColumnProps[] = [
   {
     id: 1,
@@ -49,13 +51,18 @@ const emailReg = /^[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.][a-zA-Z0-9
 
 export default defineComponent({
   name: 'App',
-  components: { GlobalHeader },
+  components: { GlobalHeader, ValidateInput },
   setup () {
     const emailRef = reactive({
       val: '',
       error: false,
       message: ''
     })
+
+    const validateRules: RulesProps = [
+      { type: 'required', message: '该字段必填' },
+      { type: 'email', message: '邮箱地址不正确' }
+    ]
 
     const validateEmail = () => {
       if (emailRef.val.trim() === '') {
@@ -71,7 +78,8 @@ export default defineComponent({
       list: testData,
       user: currentUser,
       emailRef,
-      validateEmail
+      validateEmail,
+      validateRules
     }
   }
 })
