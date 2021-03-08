@@ -9,7 +9,7 @@ export interface PostProps {
     title: string;
     content: string;
     image?: string;
-    createdAt: string;
+    createdAt?: string;
     columnId: number;
   }
 export const testData: ColumnProps[] = [
