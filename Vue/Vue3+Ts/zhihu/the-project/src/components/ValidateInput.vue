@@ -40,6 +40,7 @@ export default defineComponent({
       message: ''
     })
 
+    //
     const updateModalValue = (e: KeyboardEvent) => {
       const targetValue = (e.target as HTMLInputElement).value
       inputRef.val = targetValue
