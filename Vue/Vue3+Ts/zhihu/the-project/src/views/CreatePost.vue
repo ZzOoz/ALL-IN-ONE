@@ -59,7 +59,7 @@ export default {
             title: titleVal.value,
             content: contentVal.value,
             columnId,
-            createAt: new Date().toDateString()
+            createdAt: new Date().toDateString()
           }
           store.commit('createPost', newPost)
           router.push({ name: 'column', params: { id: columnId } })
