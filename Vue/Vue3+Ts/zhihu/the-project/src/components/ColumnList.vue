@@ -4,7 +4,7 @@
       <div class="card h-100 shadow-sm" style="width: 18rem">
         <div class="card-body text-center">
           <img
-            :src="column.avatar"
+            :src="column.avatar.url"
             class="rounded-circle border border-light w-25 my-3"
           />
           <h5 class="card-title">{{ column.title }}</h5>
@@ -20,12 +20,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-export interface ColumnProps {
-  id: number;
-  title: string;
-  avatar?: string;
-  description: string;
-}
+import { ColumnProps } from '../testData'
 export default defineComponent({
   name: 'ColumnList',
   props: {
@@ -37,11 +32,13 @@ export default defineComponent({
   },
   setup (props) {
     const columnsList = computed(() => {
-      return props.list.map((item) => {
-        if (!item.avatar) {
-          item.avatar = require('@/assets/logo.png')
+      return props.list.map((column: ColumnProps) => {
+        if (!column.avatar) {
+          column.avatar = {
+            url: require('@/assets/logo.png')
+          }
         }
-        return item
+        return column
       })
     })
     return {

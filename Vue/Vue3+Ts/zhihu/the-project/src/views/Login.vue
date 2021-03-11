@@ -61,6 +61,7 @@ export default {
 
     const formValidate = (result: boolean) => {
       if (result) {
+        // 验证结果传递上去
         router.push({ name: 'home' })
         store.commit('login')
         console.log(store.state.user.isLogin, 'isLogin')

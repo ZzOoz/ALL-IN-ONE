@@ -40,7 +40,7 @@ export default defineComponent({
       message: ''
     })
 
-    //
+    // 通过input事件 响应式更新modelValue
     const updateModalValue = (e: KeyboardEvent) => {
       const targetValue = (e.target as HTMLInputElement).value
       inputRef.val = targetValue
