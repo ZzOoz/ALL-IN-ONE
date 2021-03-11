@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import { testData, testPosts, PostProps, ColumnProps } from '@/testData'
+import axios from 'axios'
 
 interface UserProps {
     isLogin: boolean;
@@ -37,6 +38,16 @@ const store = createStore<GlobalProps>({
     },
     createPost (state, newPost) {
       state.posts.push(newPost)
+    },
+    featchColumns (state, newColumns) {
+      state.columns = newColumns.data.list
+    }
+  },
+  actions: {
+    fetchColumns (context) {
+      axios.get('/columns').then(res => {
+        context.commit('fetchColumns', res.data)
+      })
     }
   }
 })

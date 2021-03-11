@@ -18,7 +18,7 @@
 <script lang='ts'>
 import ColumnsList from '@/components/ColumnList.vue'
 import { useStore } from 'vuex'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { GlobalProps } from '@/store/main'
 export default {
   name: '',
@@ -27,6 +27,11 @@ export default {
   setup () {
     const store = useStore<GlobalProps>()
     const testData = computed(() => store.state.columns)
+
+    onMounted(() => {
+      store.dispatch('fetchColumns')
+    })
+
     return {
       testData
     }
