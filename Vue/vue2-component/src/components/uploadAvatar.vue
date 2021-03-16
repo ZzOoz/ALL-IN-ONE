@@ -34,6 +34,12 @@ const imgDomain = "";
 export default {
   name: "uploadAvatar",
   props: {
+    value: {
+      type: String,
+      default: () => {
+        return "";
+      },
+    },
     // 上传类型
     type: {
       type: Array,

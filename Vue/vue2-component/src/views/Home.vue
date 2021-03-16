@@ -1,52 +1,21 @@
 <template>
   <div class="home">
-    <!-- 上传头像组件使用 -->
-    <uploadAvatar
-      v-model="userInfo.avatar"
-      :resource-name="'basic/account'"
-      media-type="image"
-      @success="uploadSuccess"
-    />
-
-    <!-- 上传图片组件使用 -->
-    <uploadImage
-      resource-name="accountManage"
-      :preview-src-list="userInfo.srcList"
-      :preview-src-key="userInfo.srcKeyList"
-      :limit-number="1"
-      :limit-size="5"
-      limit-type="JPG"
-      @getImgList="getImgList"
-    />
+    <!-- 带输入建议的输入框 -->
+    <autoComplete />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import uploadAvatar from "@/components/uploadAvatar.vue";
-import uploadImage from "@/components/uploadImage.vue";
+import autoComplete from "@/components/autoComplete.vue";
 export default {
   name: "Home",
   components: {
-    uploadAvatar,
-    uploadImage,
+    autoComplete,
   },
   data() {
-    return {
-      userInfo: {
-        avatar: undefined,
-        srcList:[],
-        srcKeyList:[]
-      },
-    };
+    return {};
   },
-  methods: {
-    uploadSuccess(hash, key, url) {
-      console.log(hash, "hash");
-      console.log(key, "key");
-      console.log(url, "url");
-    },
-    getImgList() {},
-  },
+  methods: {},
 };
 </script>
