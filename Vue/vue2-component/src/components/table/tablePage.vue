@@ -8,7 +8,7 @@
 
     <el-table
       ref="tablePage"
-      style="transition: all .2s"
+      style="transition: all 0.2s"
       :header-cell-style="{ background: '#fafafa' }"
       :border="border"
       :data="data.content"
@@ -57,8 +57,8 @@
       layout="total, sizes, prev, pager, next, jumper"
       :current-page.sync="pageInfo.pageNum"
       :page-size="pageInfo.pageSize"
-      :page-sizes="[10, 20, 30, 40]"
-      :total="data.totalElement"
+      :page-sizes="[10, 20, 30, 40, 100]"
+      :total="data.totalElements"
       v-bind="$attrs"
       v-on="$listeners"
       @current-change="currentChange"
@@ -68,8 +68,33 @@
 </template>
 
 <script>
+import { throttle } from "@/utils/tool";
+const SPLIT_SYMBOL = "--";
 export default {
   components: {},
+  created() {
+    this.calcMinWidth();
+  },
+  mounted() {
+    function resize() {
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          this.$nextTick(() => {
+            this.$refs.etmTable && this.$refs.etmTable.doLayout();
+          });
+        })
+      );
+    }
+
+    this.$on("hook:mounted", resize);
+    this.$on("hook:destroyed", resize);
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.init();
+      }, 100);
+    });
+  },
   props: {
     // 数据栏
     data: {
@@ -142,8 +167,16 @@ export default {
     data: {
       async handler(data) {
         // 处理数据返回空
-        await this.transformDataNullToSymbol(data);
+        await this.transformDataNullToSymbol(data.content);
+        await this.calcMinWidth();
+        // 更改页数
+        this.pageInfo.pageNum = data.pageNum;
+        // 触发table重新渲染
+        this.$nextTick(() => {
+          this.$refs.tablePage && this.$refs.tablePage.doLayout();
+        });
       },
+      deep: true,
     },
   },
   methods: {
@@ -151,14 +184,111 @@ export default {
     init() {
       this.$refs.tablePage && this.$refs.tablePage.doLayout();
     },
+    // 分页处理 页数改变时触发
+    currentChange(pageNum) {
+      this.pageInfo.pageNum = pageNum;
+      // 给emit统一处理
+      this.emit();
+    },
     // 分页处理
-    currentChange() {},
-    // 分页处理
-    sizeChange() {},
+    sizeChange(size) {
+      this.pageInfo.pageNum = 1;
+      this.pageInfo.pageSize = size;
+      this.$emit();
+    },
+    emit() {
+      const { pageNum, pageSize } = this.pageInfo;
+      this.$emit("currentChange", pageNum, pageSize);
+    },
     // 处理返回的数据是空的方法
-    transformDataNullToSymbol() {},
-    // 计算宽度方法
-    calcMinWidth() {},
+    transformDataNullToSymbol(data) {
+      data.forEach((item) => {
+        for (const itemKey in item) {
+          if (item[itemKey] === null) {
+            item[itemKey] = SPLIT_SYMBOL;
+          }
+          if (item[itemKey] === undefined) {
+            item[itemKey] === SPLIT_SYMBOL;
+          }
+          if (item[itemKey] === "") {
+            item[itemKey] === SPLIT_SYMBOL;
+          }
+        }
+      });
+    },
+    // 计算宽度方法 取最小宽度或者根据字体长度计算宽度
+    calcMinWidth() {
+      console.log(this.$slots.left, "left");
+      // this.$slots.left这些数据是一个数组可以遍历循环
+      this.$slots.left &&
+        this.$slots.left.forEach((node) => {
+          // 不存在即返回
+          if (!node.componentOptions) {
+            return;
+          }
+
+          // 如果有label那么计算根据它的最小宽度
+          if (node.componentOptions.propsData.label) {
+            node.componentOptions.propsData.minWidth = this.minWidth(
+              node.componentOptions.propsData
+            );
+          }
+
+          // 如果有类型索引 如index或selection，取中间位
+          if (node.componentOptions.propsData.type) {
+            node.componentOptions.propsData.minWidth = this.minWidth(
+              node.componentOptions.propsData
+            );
+            node.componentOptions.propsData.align = "center";
+          }
+        });
+
+      this.$slots.right &&
+        this.$slots.right.forEach((node) => {
+          // 不存在即返回
+          if (!node.componentOptions) {
+            return;
+          }
+
+          // 如果有label那么计算根据它的最小宽度
+          if (node.componentOptions.propsData.label) {
+            node.componentOptions.propsData.minWidth = this.minWidth(
+              node.componentOptions.propsData
+            );
+          }
+
+          // 如果有类型索引 如index或selection，取中间位
+          if (node.componentOptions.propsData.type) {
+            node.componentOptions.propsData.minWidth = this.minWidth(
+              node.componentOptions.propsData
+            );
+            node.componentOptions.propsData.align = "center";
+          }
+        });
+
+      this.$slots.default &&
+        this.$slots.default.forEach((node) => {
+          // 不存在即返回
+          if (!node.componentOptions) {
+            return;
+          }
+
+          // 如果有label那么计算根据它的最小宽度
+          if (node.componentOptions.propsData.label) {
+            node.componentOptions.propsData.minWidth = this.minWidth(
+              node.componentOptions.propsData
+            );
+          }
+
+          // 如果有类型索引 如index或selection，取中间位
+          if (node.componentOptions.propsData.type) {
+            node.componentOptions.propsData.minWidth = this.minWidth(
+              node.componentOptions.propsData
+            );
+            node.componentOptions.propsData.align = "center";
+          }
+        });
+    },
 
     /**
      * 设置最小宽度为60
@@ -176,6 +306,7 @@ export default {
       // 对于标签的长度进行设置、label的长度 * 单个字体的宽度 + padding
       if (col.label) {
         const padding = 10 + 16;
+        // 最小宽度 但是遇到比较少的数据的时候就会自动填充到满
         minWidth = col.label.length * this.fontWidth + padding;
       }
       // 如果有最小宽度那么就用最小宽度

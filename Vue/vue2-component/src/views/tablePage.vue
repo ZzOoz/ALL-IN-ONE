@@ -5,6 +5,9 @@
       :columns="columns"
       @currentChange="currentChange"
     >
+      <el-table-column label="12213" slot="left">
+        <span>1111</span>
+      </el-table-column>
     </tablePage>
   </div>
 </template>
@@ -21,12 +24,12 @@ export default {
         pageSize: 10,
         content: [
           {
-            test1: '111',
-            test2: '222',
-            test3: '333',
-            test4: '444'
-          }
-        ]
+            test1: "111",
+            test2: "222",
+            test3: "333",
+            test4: "444",
+          },
+        ],
       },
       columns: [
         {
@@ -35,24 +38,82 @@ export default {
           fixed: "left",
         },
         {
-          label: "测试1",
-          prop: "test1",
+          label: "测试2",
+          prop: "test2",
           fixed: "left",
         },
         {
-          label: "测试1",
-          prop: "test1",
-          fixed: "left",
+          label: "测试3",
+          prop: "test3",
         },
         {
-          label: "测试1",
-          prop: "test1",
-          fixed: "left",
+          label: "测试3",
+          prop: "test3",
         },
         {
-          label: "测试1",
-          prop: "test1",
-          fixed: "left",
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试3",
+          prop: "test3",
+        },
+        {
+          label: "测试4",
+          prop: "test4",
+          fixed: "right",
         },
       ],
     };
