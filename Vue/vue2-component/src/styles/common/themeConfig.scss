@@ -1,0 +1,101 @@
+$default-backgroundColor: white;
+$dark-backgroundColor: #222;
+$dark: rgba(109, 116, 134, 0.9);
+$sidebar-icon-color: #9ea5b6;
+$sidebar-background-bottom-rainBlue-img: "../assets/images/sidebar/rainBlue.png";
+$sidebar-background-bottom-pink-img: "../assets/images/sidebar/pink.png";
+$sidebar-background-bottom-purple-img: "../assets/images/sidebar/purple.png";
+$sidebar-background-bottom-warmOrange-img: "../assets/images/sidebar/warmOrange.png";
+$sidebar-background-bottom-yellow-img: "../assets/images/sidebar/yellow.png";
+$sidebar-background-bottom-blue-img: "../assets/images/sidebar/blue.png";
+$sidebar-background-bottom-green-img: "../assets/images/sidebar/green.png";
+$sidebar-background-bottom-girlPink-img: "../assets/images/sidebar/girlPink.png";
+$sidebar-background-bottom-lavenderPurple-img: "../assets/images/sidebar/lavenderPurple.png";
+
+$white: #fff;
+$black: #000;
+$yellow: #e4ac2f;
+$blackGold: #e4ac2f;
+$purple: #8457f2;
+$pink: #f56b9b;
+$brown: #ba7a5c;
+$green: #57c69a;
+$blue: #3d7bff;
+$warmOrange: #ff9670;
+$rainBlue: #0ec0c8;
+$girlPink: #fa8c8e;
+$lavenderPurple: #ca6cf5;
+
+$themes: (
+  Yten-rainBlue: (
+    color: $rainBlue,
+    backgroundColor: $default-backgroundColor,
+  ),
+  Yten-pink: (
+    color: $pink,
+    backgroundColor: $default-backgroundColor,
+  ),
+  Yten-purple: (
+    color: $purple,
+    backgroundColor: $default-backgroundColor,
+  ),
+  Yten-warmOrange: (
+    color: $warmOrange,
+    backgroundColor: $default-backgroundColor,
+  ),
+  Yten-blackGold: (
+    color: $blackGold,
+    backgroundColor: $default-backgroundColor,
+  ),
+  Yten-blue: (
+    color: $blue,
+    backgroundColor: $default-backgroundColor,
+  ),
+  Yten-green: (
+    color: $green,
+    backgroundColor: $default-backgroundColor,
+  ),
+  Yten-girlPink: (
+    color: $girlPink,
+    backgroundColor: $default-backgroundColor,
+  ),
+  Yten-lavenderPurple: (
+    color: $lavenderPurple,
+    backgroundColor: $default-backgroundColor,
+  ),
+  Yten-brown: (
+    color: $brown,
+    backgroundColor: $default-backgroundColor,
+  ),
+);
+
+// 设置边框颜色 遍历主题颜色获取值
+@mixin Yten-bdc {
+  // $key是名字如:Yten-rainBlue $value是这个$key里面的值如:color、backgroundColor
+  @each $key, $value in $themes {
+    // 这里 & 是引用父选择器作为他的后面 $key的值是挂在document.documentElement上面的（即html標簽）所以可以應用&後面的元素 設置他的border-color
+    .#{$key} & {
+      border-color: map-get($value, "color");
+    }
+  }
+}
+
+// 设置背景色
+@mixin Yten-bgc {
+  @each $key, $value in $themes {
+    .#{$key} & {
+      background: map-get($value, "color");
+    }
+  }
+}
+
+/**
+ * 字体颜色
+ */
+@mixin Yten-color {
+  @each $key, $value in $themes {
+    .#{$key} & {
+      color: map_get($value, "color");
+    }
+  }
+}

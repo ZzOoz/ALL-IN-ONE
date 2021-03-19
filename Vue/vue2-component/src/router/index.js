@@ -40,7 +40,7 @@ const routes = [
   {
     path: '/tabScreen',
     name: 'tabScreen',
-    component: () => import(/* webpackChunkName: "tabView" */ '../views/tabScreen.vue'),
+    component: () => import(/* webpackChunkName: "tabScreen" */ '../views/tabScreen.vue'),
     meta:{
       title:'tab选择组件'
     }
@@ -48,9 +48,25 @@ const routes = [
   {
     path: '/draggable',
     name: 'draggable',
-    component: () => import(/* webpackChunkName: "tabView" */ '../views/draggable.vue'),
+    component: () => import(/* webpackChunkName: "draggable" */ '../views/draggable.vue'),
     meta:{
       title:'draggable拖拽'
+    }
+  },
+  {
+    path: '/popup',
+    name: 'popup',
+    component: () => import(/* webpackChunkName: "popup" */ '../views/Popup.vue'),
+    meta:{
+      title:'popup弹出层'
+    }
+  },
+  {
+    path: '/tablePage',
+    name: 'tablePage',
+    component: () => import(/* webpackChunkName: "tablePage" */ '../views/tablePage.vue'),
+    meta:{
+      title:'基于element封住的table表格'
     }
   }
 ]

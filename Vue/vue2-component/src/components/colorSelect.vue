@@ -25,6 +25,7 @@ export default {
     value: {
       handler(val) {
         if (val) {
+          console.log(val, "12313");
           this.color = val;
         } else {
           this.color = this.predeFineColors[0];
@@ -82,7 +83,7 @@ export default {
       });
     },
     handleChange(val) {
-      console.log(this.$attrs)  // 这里获取到attrs的属性
+      console.log(this.$attrs); // 这里获取到attrs的属性
       this.$emit("input", val);
       this.$emit("change", val);
     },

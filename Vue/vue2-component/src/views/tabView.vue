@@ -1,7 +1,7 @@
 <template>
   <!-- 左右拖拽tab -->
   <div class="tabViews">
-    <el-tabs v-model="tabValue" tab-position="left" style="height: 200px;">
+    <el-tabs v-model="tabValue" tab-position="left">
       <el-tab-pane
         v-for="tab in tabList"
         :label="tab.label"
