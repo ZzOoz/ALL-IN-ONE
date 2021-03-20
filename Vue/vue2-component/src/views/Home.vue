@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <Upload></Upload>
     <!-- 带输入建议的输入框 -->
     <div class="content">
       <div class="title"><h2>vue2组件及功能整理</h2></div>
@@ -50,11 +51,13 @@
 // @ is an alias to /src
 import AutoComplete from "@/components/autoComplete.vue";
 import DialogPop from "../components/table/dialogPop.vue";
+import Upload from '@/components/element/upload/upload';
 export default {
   name: "Home",
   components: {
     AutoComplete,
     DialogPop,
+    Upload,
   },
   data() {
     return {
